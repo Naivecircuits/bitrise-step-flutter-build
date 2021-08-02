@@ -119,7 +119,9 @@ inputs:
       title: "Additional parameters"
       summary: "The flags from this input field will be appended to the `flutter build ios` command."
       description: "The flags from this input field will be appended to the `flutter build ios` command."
-  - ios_output_pattern: "*build/ios/iphoneos/*.app"
+  - ios_output_pattern: |-
+      "*build/ios/iphoneos/*.app"
+      "*build/ios/archive/*.xcarchive"
     opts:
       category: "iOS Platform Configs"
       title: "Output pattern"
