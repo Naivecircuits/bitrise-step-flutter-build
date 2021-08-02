@@ -36,9 +36,11 @@ func (spec buildSpecification) exportArtifacts(artifacts []string) error {
 	case "appbundle":
 		return spec.exportAndroidArtifacts(AppBundle, artifacts, deployDir)
 	case "ios":
+		fallthrough
+	case "ipa":
 		return spec.exportIOSApp(artifacts, deployDir)
 	default:
-		return fmt.Errorf("unsupported platform for exporting artifacts: %s. Supported platforms: apk, appbundle, ios", spec.platformCmdFlag)
+		return fmt.Errorf("unsupported platform for exporting artifacts: %s. Supported platforms: apk, appbundle, ios, ipa", spec.platformCmdFlag)
 	}
 }
 
