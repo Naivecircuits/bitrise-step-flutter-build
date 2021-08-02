@@ -17,9 +17,11 @@ import (
 	shellquote "github.com/kballard/go-shellquote"
 )
 
-// AndroidArtifactType is an enum
-// **APK** or **AppBundle**
+// AndroidArtifactType is the type of the Android artifact enum values
 type AndroidArtifactType string
+
+// IOSArtifactType is the type of the IOS artifact enum values
+type IOSArtifactType string
 
 // const ...
 const (
@@ -28,6 +30,9 @@ const (
 
 	APK       AndroidArtifactType = "apk"
 	AppBundle AndroidArtifactType = "appbundle"
+
+	IOS IOSArtifactType = "ios"
+	IPA IOSArtifactType = "ipa"
 )
 
 var flutterConfigPath = filepath.Join(os.Getenv("HOME"), ".flutter_settings")
@@ -37,6 +42,7 @@ type config struct {
 	IOSAdditionalParams     string              `env:"ios_additional_params"`
 	AndroidAdditionalParams string              `env:"android_additional_params"`
 	Platform                string              `env:"platform,opt[both,ios,android]"`
+	IOSOutputType           IOSArtifactType     `env:"ios_output_type,opt[ios,ipa]"`
 	IOSExportPattern        string              `env:"ios_output_pattern,required"`
 	AndroidOutputType       AndroidArtifactType `env:"android_output_type,opt[apk,appbundle]"`
 	AndroidExportPattern    string              `env:"android_output_pattern,required"`
@@ -163,7 +169,7 @@ build:
 	for _, spec := range []buildSpecification{
 		{
 			displayName:          "iOS",
-			platformCmdFlag:      "ios",
+			platformCmdFlag:      string(cfg.IOSOutputType),
 			platformSelectors:    []string{"both", "ios"},
 			outputPathPatterns:   strings.Split(cfg.IOSExportPattern, "\n"),
 			additionalParameters: cfg.IOSAdditionalParams,
